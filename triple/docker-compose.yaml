@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  triple-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./src:/triple/src
+    env_file:
+      - ./.env
+
+  triple-dbserver:
+    platform: linux/x86_64
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: 'triple'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - 3306:3306
+
+  triple-redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
