@@ -31,7 +31,7 @@ export class UserService {
   /**
    * 유저를 생성합니다.
    *
-   * @param createUserDto 생성할 유저의 정보를담은 DTO입니다.
+   * @param createUserDto 생성할 유저의 정보를 담은 DTO입니다.
    * @returns 생성된 유저를 반환합니다.
    */
   async create(createUserDto: CreateUserDto) {
