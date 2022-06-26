@@ -6,7 +6,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { Review } from '../review/entities/review.entity';
 
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/createUserDto';
@@ -17,8 +16,6 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @InjectRepository(Review)
-    private readonly reviewRepository: Repository<Review>,
   ) {}
 
   /**
