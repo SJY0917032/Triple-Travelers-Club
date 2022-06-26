@@ -1,12 +1,19 @@
-import { Column, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Review } from '../../review/entities/review.entity';
 
+@Entity()
 export class Place {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Index()
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @OneToMany(() => Review, (review) => review.place, {
