@@ -1,15 +1,19 @@
 import { CacheModule, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
-// redis
+//  redis
 import { RedisClientOptions } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
+//
+//Modules
+import { UserModule } from './apis/user/user.module';
+import { ReviewModule } from './apis/review/review.module';
 
 @Module({
   imports: [
+    UserModule,
+    ReviewModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'triple-dbserver',
