@@ -15,10 +15,13 @@ export class User {
   id: string;
 
   @Column()
+  email: string;
+
+  @Column()
   nickName: string;
 
   @Column()
-  phone: string;
+  password: string;
 
   @Column({ default: 1 })
   level: number;
