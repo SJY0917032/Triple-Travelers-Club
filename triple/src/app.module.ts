@@ -9,11 +9,13 @@ import * as redisStore from 'cache-manager-redis-store';
 //Modules
 import { UserModule } from './apis/user/user.module';
 import { ReviewModule } from './apis/review/review.module';
+import { FileModule } from './apis/file/file.module';
 
 @Module({
   imports: [
     UserModule,
     ReviewModule,
+    FileModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'triple-dbserver',
