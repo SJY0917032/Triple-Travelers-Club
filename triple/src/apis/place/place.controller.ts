@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   ValidationPipe,
 } from '@nestjs/common';

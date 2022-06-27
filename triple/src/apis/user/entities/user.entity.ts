@@ -9,6 +9,8 @@ import {
 } from 'typeorm';
 import { Review } from '../../review/entities/review.entity';
 
+import { Point } from '../../point/entities/point.entity';
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -40,4 +42,10 @@ export class User {
     cascade: true,
   })
   reviews?: Review[];
+
+  @OneToMany(() => Point, (point) => point.user, {
+    nullable: true,
+    cascade: true,
+  })
+  points?: Point[];
 }
