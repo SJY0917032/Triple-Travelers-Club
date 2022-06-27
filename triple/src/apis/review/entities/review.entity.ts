@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -30,6 +31,7 @@ export class Review {
   @ManyToOne(() => User)
   user: User;
 
+  @Index()
   @ManyToOne(() => Place)
   place: Place;
 

@@ -8,13 +8,19 @@ import * as redisStore from 'cache-manager-redis-store';
 //
 //Modules
 import { UserModule } from './apis/user/user.module';
+import { PlaceModule } from './apis/place/place.module';
 import { ReviewModule } from './apis/review/review.module';
 import { FileModule } from './apis/file/file.module';
+import { PointModule } from './apis/point/point.module';
+import { EventModule } from './apis/event/event.module';
 
 @Module({
   imports: [
     UserModule,
+    PlaceModule,
     ReviewModule,
+    PointModule,
+    EventModule,
     FileModule,
     TypeOrmModule.forRoot({
       type: 'mysql',

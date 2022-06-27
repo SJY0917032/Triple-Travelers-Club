@@ -9,6 +9,7 @@ import { Review } from './entities/review.entity';
 import { UpdateReviewDto } from './dto/updateReviewDto';
 import { ActionFormat, EventTypeFormat } from '../point/entities/point.entity';
 import { ReviewImage } from '../reviewImage/entities/reviewImage.entity';
+import { EventDto } from '../event/dto/eventDto';
 
 @Injectable()
 export class ReviewService {
@@ -74,7 +75,7 @@ export class ReviewService {
 
       await queryRunner.commitTransaction();
 
-      const result = {
+      const result: EventDto = {
         type: EventTypeFormat.REVIEW,
         action: ActionFormat.ADD,
         reviewId: review.id,
@@ -144,7 +145,6 @@ export class ReviewService {
         if (!review.images.includes(reviewImage)) {
           reviewImage = await this.reviewImageService.save(reviewImage);
         }
-        console.log(reviewImage);
         images.push(reviewImage);
       }
     }
@@ -159,7 +159,7 @@ export class ReviewService {
       relations: ['user', 'place', 'images'],
     });
 
-    const result = {
+    const result: EventDto = {
       type: EventTypeFormat.REVIEW,
       action: ActionFormat.MOD,
       reviewId: updateReviewResult.id,
@@ -168,9 +168,6 @@ export class ReviewService {
       userId: updateReviewResult.user.id,
       placeId: updateReviewResult.place.id,
     };
-
-    console.log(result);
-
     return result;
   }
 
@@ -187,7 +184,7 @@ export class ReviewService {
       );
     }
     await this.reviewRepository.softRemove(review);
-    const result = {
+    const result: EventDto = {
       type: EventTypeFormat.REVIEW,
       action: ActionFormat.DELETE,
       reviewId: review.id,
@@ -196,9 +193,6 @@ export class ReviewService {
       userId: review.user.id,
       placeId: review.place.id,
     };
-
-    console.log(result);
-
     return result;
   }
 }

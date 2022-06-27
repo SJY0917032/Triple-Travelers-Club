@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   Index,
+  CreateDateColumn,
 } from 'typeorm';
 import { Review } from '../../review/entities/review.entity';
 import { User } from '../../user/entities/user.entity';
@@ -18,6 +19,17 @@ export enum ActionFormat {
   DELETE = 'DELETE',
 }
 
+export enum ReasonFormat {
+  REVIEW_ADD = 'REVIEW_ADD',
+  REVIEW_ADD_with_PHOTO = 'REVIEW_ADD_with_PHOTO',
+  REVIEW_ADD_FIRST_PLACE = 'REVIEW_ADD_FIRST_PLACE',
+  REVIEW_MOD_ADD_PHOTO = 'REVIEW_MOD_ADD_PHOTO',
+  REVIEW_MOD_DELETE_PHOTO = 'REVIEW_MOD_DELETE_PHOTO',
+  REVIEW_DELETE = 'REVIEW_DELETE',
+  REVIEW_DELETE_with_PHOTO = 'REVIEW_DELETE_with_PHOTO',
+  REVIEW_DELETE_FIRST_PLACE = 'REVIEW_DELETE_FIRST_PLACE',
+}
+
 @Entity()
 export class Point {
   @PrimaryGeneratedColumn('uuid')
@@ -30,6 +42,9 @@ export class Point {
   action: ActionFormat;
 
   @Column()
+  reason: ReasonFormat;
+
+  @Column({ type: 'decimal' })
   score: number;
 
   @Index()
@@ -38,4 +53,7 @@ export class Point {
 
   @ManyToOne(() => Review)
   review: Review;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
