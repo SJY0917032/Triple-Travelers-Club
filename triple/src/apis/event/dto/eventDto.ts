@@ -23,7 +23,7 @@ export class EventDto {
   readonly action: ActionFormat;
 
   @ApiProperty({
-    example: 'ed3c7650-1f5c-470c-a62b-addefe8a0982',
+    example: 'REVIEW UUID',
     description: '이벤트가 발생한 review의 ID (UUID)',
     required: true,
   })
@@ -39,15 +39,15 @@ export class EventDto {
   readonly content: string;
 
   @ApiProperty({
-    example: '["사진1", "사진2"]',
-    description: '이벤트가 발생한 review의 image',
+    example: '["reviewImage UUID 1", "reviewImage UUID 2"]',
+    description: '이벤트가 발생한 review의 reviewImage ID (UUID) 배열',
     required: true,
   })
   @IsArray()
   readonly attachedPhotoIds: string[];
 
   @ApiProperty({
-    example: '016b1c8b-16e8-41fd-d6d5-a7377a37ec65',
+    example: 'USER UUID',
     description: '이벤트가 발생한 review를 작성한 User의 ID (UUID)',
     required: true,
   })
@@ -55,7 +55,7 @@ export class EventDto {
   readonly userId: string;
 
   @ApiProperty({
-    example: '378d7f7d-b24b-4ae5-8f5e-7d21c449549f',
+    example: 'PLACE UUID',
     description: '이벤트가 발생한 review의 place ID (UUID)',
     required: true,
   })
