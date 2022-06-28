@@ -19,22 +19,24 @@ export class UserService {
   ) {}
 
   /**
-   * 모든 유저를 반환합니다.
+   * @author SJY0917032
+   * @description 모든 유저를 반환합니다.
    *
-   * @returns 모든 유저를 반환합니다.
+   * @returns { Promise<User[]> } 유저 목록을 반환합니다.
    */
-  async findAll() {
+  async findAll(): Promise<User[]> {
     const results = this.userRepository.find();
     return results;
   }
 
   /**
-   * 유저를 생성합니다.
+   * @author SJY0917032
+   * @description 유저를 생성합니다.
    *
    * @param createUserDto 생성할 유저의 정보를 담은 DTO입니다.
-   * @returns 생성된 유저를 반환합니다.
+   * @returns { Promise<User> } 생성된 유저를 반환합니다.
    */
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const { nickName, email, password } = createUserDto;
 
     const userExists = await this.checkUserExists(email);
@@ -52,13 +54,14 @@ export class UserService {
   }
 
   /**
-   * 유저를 수정합니다.
+   * @author SJY0917032
+   * @description 유저를 수정합니다.
    *
    * @param email 변경할 유저의 이메일
    * @param updateUserDto 변경할 내용을담은 DTO입니다.
-   * @returns 변경된 유저를 반환합니다.
+   * @returns { Promise<User> } 수정된 유저를 반환합니다.
    */
-  async update(email: string, updateUserDto: UpdateUserDto) {
+  async update(email: string, updateUserDto: UpdateUserDto): Promise<User> {
     const { nickName } = updateUserDto;
 
     const userExists = await this.checkUserExists(email);
@@ -76,12 +79,13 @@ export class UserService {
   }
 
   /**
-   * 유저를 삭제합니다.
+   * @author SJY0917032
+   * @description 유저를 삭제합니다.
    *
    * @param email 삭제할 User
-   * @returns 삭제된 결과를 boolean형태로 반환합니다.
+   * @returns { Promise<boolean> } 삭제 여부를 반환합니다.
    */
-  async delete(email: string) {
+  async delete(email: string): Promise<boolean> {
     const userExists = await this.checkUserExists(email);
 
     if (!userExists) {
@@ -94,10 +98,11 @@ export class UserService {
   }
 
   /**
-   * 이메일을 검증합니다.
+   * @author SJY0917032
+   * @description 이메일을 검증합니다.
    *
    * @param email 이메일
-   * @returns 검증한 유저를 반환합니다.
+   * @returns Promise<User> OR Null 검증한 유저를 반환합니다.
    */
   private async checkUserExists(email: string): Promise<User> | null {
     const user = await this.userRepository.findOne({

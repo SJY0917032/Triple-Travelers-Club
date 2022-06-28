@@ -1,5 +1,6 @@
 import { IsEmail, IsString, Matches } from 'class-validator';
 import { Transform } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 /**
  *
@@ -9,13 +10,28 @@ import { Transform } from 'class-transformer';
  *
  */
 export class CreateUserDto {
+  @ApiProperty({
+    example: '트리플러1',
+    description: '유저 닉네임',
+    required: true,
+  })
   @Transform((params) => params.value.trim())
   @IsString()
   readonly nickName: string;
 
+  @ApiProperty({
+    example: 'triple@triple.com',
+    description: '유저의 이메일주소',
+    required: true,
+  })
   @IsEmail()
   readonly email: string;
 
+  @ApiProperty({
+    example: '123456',
+    description: '유저의 비밀번호, 6자이상 30자이하, 유저 생성시 암호화됨',
+    required: true,
+  })
   @IsString()
   @Matches(/^[A-Za-z\d!@#$%^&*()]{6,30}$/)
   readonly password: string;
