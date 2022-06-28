@@ -21,7 +21,9 @@ export class PlaceService {
    * @returns 모든 장소를 반환합니다.
    */
   async findAll() {
-    const result = await this.placeRepository.find();
+    const result = await this.placeRepository.find({
+      relations: ['reviews'],
+    });
 
     return result;
   }
