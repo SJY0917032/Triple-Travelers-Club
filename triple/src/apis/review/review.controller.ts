@@ -28,6 +28,12 @@ export class ReviewController {
     private readonly reviewService: ReviewService, //
   ) {}
 
+  /**
+   * @author SJY0917032
+   * @description 리뷰를 생성합니다.
+   *
+   * @returns {Promise<EventDto>} ADD EventDto를 생성해 리턴합니다.
+   */
   @Post()
   @ApiOperation({
     summary: '리뷰 생성',
@@ -41,10 +47,19 @@ export class ReviewController {
     description: '필수값이 존재하지 않거나 유저, 장소가 존재하지 않는경우',
     status: 400,
   })
-  create(@Body(ValidationPipe) createReviewDto: CreateReviewDto) {
+  create(
+    @Body(ValidationPipe) createReviewDto: CreateReviewDto,
+  ): Promise<EventDto> {
     return this.reviewService.create(createReviewDto);
   }
 
+  /**
+   * @author SJY0917032
+   * @description 리뷰를 수정합니다.
+   *
+   * @param reviewId 리뷰 아이디 (UUID)
+   * @returns {Promise<EventDto>}  MOD EventDto를 생성해 리턴합니다.
+   */
   @Patch(':reviewId')
   @ApiOperation({
     summary: '리뷰 수정',
@@ -62,10 +77,17 @@ export class ReviewController {
   update(
     @Param('reviewId') reviewId: string,
     @Body(ValidationPipe) updateReviewDto: UpdateReviewDto,
-  ) {
+  ): Promise<EventDto> {
     return this.reviewService.update(reviewId, updateReviewDto);
   }
 
+  /**
+   * @author SJY0917032
+   * @description 리뷰를 수정합니다.
+   *
+   * @param reviewId 삭제할 리뷰 아이디 (UUID)
+   * @returns {Promise<EventDto>} DELETE EventDto를 생성해 리턴합니다.
+   */
   @Delete(':reviewId')
   @ApiOperation({
     summary: '리뷰 삭제',
@@ -80,10 +102,17 @@ export class ReviewController {
     description: '리뷰가 존재하지 않는경우.',
     status: 400,
   })
-  delete(@Param('reviewId') reviewId: string) {
+  delete(@Param('reviewId') reviewId: string): Promise<EventDto> {
     return this.reviewService.delete(reviewId);
   }
 
+  /**
+   * @author SJY0917032
+   * @description 리뷰를 ID로 조회합니다.
+   *
+   * @param id 단일 조회할 리뷰의 ID (UUID)
+   * @returns {Promise<Review>} 조회한 REVIEW를 반환합니다.
+   */
   @Get(':id')
   @ApiOperation({
     summary: '리뷰 조회',
@@ -98,10 +127,17 @@ export class ReviewController {
     description: '리뷰가 존재하지 않는경우.',
     status: 400,
   })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Review> {
     return this.reviewService.findOneById(id);
   }
 
+  /**
+   * @author SJY0917032
+   * @description 유저의 리뷰를 조회합니다.
+   *
+   * @param userId 리뷰를 조회할 유저의 ID (UUID)
+   * @returns {Promise<Review[]>} 조회한 유저의 리뷰를 반환합니다.
+   */
   @Get('/me/:userId')
   @ApiOperation({
     summary: '내 리뷰 조회',
@@ -112,7 +148,7 @@ export class ReviewController {
     description: '리뷰 조회 성공',
     type: [Review],
   })
-  findAllByUserId(@Param('userId') userId: string) {
+  findAllByUserId(@Param('userId') userId: string): Promise<Review[]> {
     return this.reviewService.findAllByUserId(userId);
   }
 }
