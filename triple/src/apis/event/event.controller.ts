@@ -24,7 +24,7 @@ export class EventController {
 
   /**
    * @author SJY0917032
-   * @description @Body 어노테이션을통해 요청 객체를 접근할 수 있습니다.
+   * @description
    *
    * EventDto를 사용해 이벤트를 분리하며
    * 분리된 이벤트에 따른 포인트를 부여합니다
