@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, QueryRunner, Repository } from 'typeorm';
 import { Review } from '../review/entities/review.entity';
 import { User } from '../user/entities/user.entity';
 import { Place } from '../place/entities/place.entity';
@@ -78,7 +78,7 @@ export class EventService {
         reason: reason,
       });
 
-      await this.pointRepository.save(addPoint);
+      await queryRunner.manager.save(addPoint);
       result.push(addPoint);
 
       if (isFirstWrite) {
@@ -90,10 +90,12 @@ export class EventService {
           score: 1,
           reason: ReasonFormat.REVIEW_ADD_FIRST_PLACE,
         });
-        await this.pointRepository.save(bonusPoint);
+        await queryRunner.manager.save(bonusPoint);
         result.push(bonusPoint);
       }
 
+      const checkUserLevel = await this.userLevelCheck(user);
+      await this.updateUserLevel(user, checkUserLevel, queryRunner);
       await queryRunner.commitTransaction();
       return result;
     } catch (error) {
@@ -138,6 +140,9 @@ export class EventService {
 
         await this.pointRepository.save(modPoint);
 
+        const checkUserLevel = await this.userLevelCheck(user);
+        await this.updateUserLevel(user, checkUserLevel, queryRunner);
+
         await queryRunner.commitTransaction();
         return modPoint;
       } catch (error) {
@@ -159,6 +164,7 @@ export class EventService {
   }: EventDto): Promise<Point[]> {
     const result: Point[] = [];
     const user = await this.checkUser(userId);
+
     const review = await this.checkReview(reviewId);
     const score = await this.deleteScoreCheck(review); // [ 삭제한 리뷰의 차감점수, 차감할 첫글 보너스점수 ]
 
@@ -196,6 +202,9 @@ export class EventService {
         await this.pointRepository.save(deleteBonusPoint);
         result.push(deleteBonusPoint);
       }
+      const checkUserLevel = await this.userLevelCheck(user);
+      await this.updateUserLevel(user, checkUserLevel, queryRunner);
+
       await queryRunner.commitTransaction();
       return result;
     } catch (error) {
@@ -326,6 +335,40 @@ export class EventService {
     if (point[0].reason === ReasonFormat.REVIEW_MOD_DELETE_PHOTO) {
       reviewPoint = -1;
       return [reviewPoint, isFirstWrite];
+    }
+  }
+
+  private async userLevelCheck(user: User): Promise<number> {
+    const userPoint = await this.pointRepository.find({
+      where: {
+        user: {
+          id: user.id,
+        },
+      },
+    });
+
+    const currentUserPoint = userPoint.reduce((acc, cur) => {
+      return acc + Number(cur.score);
+    }, 0);
+
+    if (currentUserPoint < 45) {
+      return 1;
+    }
+    if (currentUserPoint < 100) {
+      return 2;
+    }
+    if (currentUserPoint >= 100) {
+      return 3;
+    }
+  }
+
+  private async updateUserLevel(user: User, level: number, qr: QueryRunner) {
+    if (user.level != level) {
+      const update = this.userRepository.create({
+        ...user,
+        level: level,
+      });
+      await qr.manager.save(update);
     }
   }
 }
