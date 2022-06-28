@@ -26,6 +26,17 @@ export class EventService {
     private readonly dataSource: DataSource,
   ) {}
 
+  /**
+   * @author SJY0917032
+   * @description 들어온 DTO의 값으로 이벤트를 분기합니다
+   *
+   * ADD -> addEvent
+   *
+   * MOD -> modEvent
+   *
+   * DELETE -> deleteEvent
+   *
+   */
   async eventDistributor(eventDto: EventDto) {
     if (eventDto.action === ActionFormat.ADD) {
       const result: Point[] = await this.addEvent(eventDto);
@@ -43,6 +54,18 @@ export class EventService {
     }
   }
 
+  /**
+   * @author SJY0917032
+   * @description 리뷰 생성 점수를 계산합니다.
+   *
+   * 글을 작성시 1점
+   *
+   * 위의 글이 사진이 존재하면 2점
+   *
+   * 리뷰 작성 장소의 첫 리뷰면 추가로 1점을 더합니다
+   *
+   * @returns {[Point]} [Point]
+   */
   private async addEvent({
     type,
     action,
@@ -106,6 +129,16 @@ export class EventService {
     }
   }
 
+  /**
+   * @author SJY0917032
+   * @description 리뷰 수정 점수를 계산합니다.
+
+   * 수정 된 글의 사진이 존재했지만 더이상 존재하지 않으면 -1점
+   *
+   * 수정 된 글의 사진이 없었지만 추가됐다면 1점
+   *
+   * @returns [Point] OR void
+   */
   private async modEvent({
     type,
     action,
@@ -154,6 +187,16 @@ export class EventService {
     }
   }
 
+  /**
+   * @author SJY0917032
+   * @description 리뷰 삭제 점수를 계산합니다.
+   *
+   * 사진이 들어있는 리뷰를 삭제시 -2점
+   * 글만 들어있는 리뷰를 삭제시 -1점
+   * 리뷰 작성 장소의 첫 리뷰면 추가로 -1점을 차감합니다.
+   *
+   * @returns [Point] OR void
+   */
   private async deleteEvent({
     type,
     action,
@@ -215,7 +258,14 @@ export class EventService {
     }
   }
 
-  private async checkUser(userId: string) {
+  /**
+   * @author SJY0917032
+   * @description 들어온 유저 ID로 유저를 조회합니다.
+   *
+   * @param userId 유저 아이디 (UUID)
+   * @returns {User} User
+   */
+  private async checkUser(userId: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: {
         id: userId,
@@ -228,7 +278,14 @@ export class EventService {
     return user;
   }
 
-  private async checkReview(reviewId: string) {
+  /**
+   * @author SJY0917032
+   * @description 들어온 리뷰 ID로 리뷰를 조회합니다.
+   *
+   * @param reviewId 리뷰 아이디 (UUID)
+   * @returns {Review} Review
+   */
+  private async checkReview(reviewId: string): Promise<Review> {
     const review = await this.reviewRepository.findOne({
       where: {
         id: reviewId,
@@ -244,7 +301,18 @@ export class EventService {
     return review;
   }
 
-  private async IsFirstWrite(placeId: string, reviewId: string) {
+  /**
+   * @author SJY0917032
+   * @description 해당 리뷰가 장소의 첫 리뷰인지 확인합니다.
+   *
+   * @param placeId 장소의 ID (UUID)
+   * @param reviewId 리뷰의 ID (UUID)
+   * @returns {boolean} true: 첫 리뷰, false: 첫 리뷰 아님
+   */
+  private async IsFirstWrite(
+    placeId: string,
+    reviewId: string,
+  ): Promise<boolean> {
     const firstReview = await this.reviewRepository.findOne({
       where: {
         place: {
@@ -259,7 +327,18 @@ export class EventService {
     return firstReview.id === reviewId ? true : false;
   }
 
-  private async modScoreCheck(review: Review, attachedPhotoIds: string[]) {
+  /**
+   * @author SJY0917032
+   * @description 리뷰 수정 점수를 계산합니다.
+   *
+   * @param review 리뷰
+   * @param attachedPhotoIds 첨부된 사진의 ID들
+   * @returns {number} 1 | -1 | 0
+   */
+  private async modScoreCheck(
+    review: Review,
+    attachedPhotoIds: string[],
+  ): Promise<number> {
     const point = await this.pointRepository.find({
       where: {
         review: {
@@ -274,8 +353,6 @@ export class EventService {
     if (point[0].reason === ReasonFormat.REVIEW_ADD_FIRST_PLACE) {
       point[0] = point[1];
     }
-
-    console.log(point[0]);
 
     if (
       point[0].reason === ReasonFormat.REVIEW_MOD_ADD_PHOTO ||
@@ -298,6 +375,13 @@ export class EventService {
     return 0;
   }
 
+  /**
+   * @author SJY0917032
+   * @description 리뷰 삭제 점수를 계산합니다.
+   *
+   * @param review 리뷰
+   * @returns {number[]} [0]: 차감할 작성한 글의 점수, [1]: 차감할 첫 글 보너스 점수
+   */
   private async deleteScoreCheck(review: Review): Promise<number[]> {
     const point = await this.pointRepository.find({
       withDeleted: true,
@@ -338,6 +422,13 @@ export class EventService {
     }
   }
 
+  /**
+   * @author SJY0917032
+   * @description 유저의 점수를 계산해 변경할 레벨을 확인합니다.
+   *
+   * @param user 유저
+   * @returns {number} level
+   */
   private async userLevelCheck(user: User): Promise<number> {
     const userPoint = await this.pointRepository.find({
       where: {
@@ -362,7 +453,21 @@ export class EventService {
     }
   }
 
-  private async updateUserLevel(user: User, level: number, qr: QueryRunner) {
+  /**
+   * @author SJY0917032
+   * @description 유저의 현재 레벨과 변경할 레벨이 다르면 유저를 업데이트 시킵니다.
+   *
+   * @param user 유저
+   * @param level 레벨
+   * @param qr 쿼리러너
+   *
+   * @returns {Promise<void>}
+   */
+  private async updateUserLevel(
+    user: User,
+    level: number,
+    qr: QueryRunner,
+  ): Promise<void> {
     if (user.level != level) {
       const update = this.userRepository.create({
         ...user,
