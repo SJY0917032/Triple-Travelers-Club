@@ -11,9 +11,8 @@ import { Review } from '../../review/entities/review.entity';
 @Entity()
 export class Place {
   @ApiProperty({
-    example: 'UUID',
+    example: 'PLACE UUID',
     description: '장소의 ID (UUID)',
-    required: true,
   })
   @PrimaryGeneratedColumn('uuid')
   id: string;
