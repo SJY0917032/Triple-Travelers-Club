@@ -1,20 +1,29 @@
-import { HttpException, ExceptionFilter, Catch } from '@nestjs/common';
+import {
+  HttpException,
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+} from '@nestjs/common';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  catch(exception: HttpException) {
-    const status = exception.getStatus();
-    const message = exception.message;
-    const eDate = new Date();
-    const returnDate = `${eDate.getFullYear()}-${
-      eDate.getMonth() + 1
-    }-${eDate.getDate()}`;
-    const returnTime = `${eDate.getHours()}:${eDate.getMinutes()}:${eDate.getSeconds()}`;
+  catch(exception: HttpException, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const res = ctx.getResponse();
+    const req = ctx.getRequest();
 
-    console.log('🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧');
-    console.log(
-      `🚀${message}가 발생했습니다. 코드는 ${status} 발생일자 : ${returnDate} 발생시간 : ${returnTime}`,
-    );
-    console.log('🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧');
+    const log = {
+      timestamp: new Date().toISOString(),
+      url: req.url,
+      res,
+    };
+
+    const response = exception.getResponse();
+
+    const status = exception.getStatus();
+
+    console.log(`${log.timestamp} ${log.url} ${status} ${exception.message}`);
+
+    res.status(exception.getStatus()).json(response);
   }
 }
