@@ -9,8 +9,6 @@ services:
       - 3000:3000
     volumes:
       - ./src:/triple/src
-    env_file:
-      - ./.env
 
   triple-dbserver:
     platform: linux/x86_64
