@@ -127,8 +127,8 @@ export class ReviewController {
     description: '리뷰가 존재하지 않는경우.',
     status: 400,
   })
-  findOne(@Param('id') id: string): Promise<Review> {
-    return this.reviewService.findOneById(id);
+  findOne(@Param('reviewId') reviewId: string): Promise<Review> {
+    return this.reviewService.findOneById(reviewId);
   }
 
   /**
@@ -150,5 +150,19 @@ export class ReviewController {
   })
   findAllByUserId(@Param('userId') userId: string): Promise<Review[]> {
     return this.reviewService.findAllByUserId(userId);
+  }
+
+  @Get()
+  @ApiOperation({
+    summary: '리뷰 전체 조회',
+    description: '리뷰를 전체 조회합니다',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '리뷰 전체 조회 성공',
+    type: [Review],
+  })
+  findAll() {
+    return this.reviewService.findAll();
   }
 }
