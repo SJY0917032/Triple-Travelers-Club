@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -24,6 +25,7 @@ export class ReviewImage {
     description: '사진의 URL',
     required: true,
   })
+  @Index()
   @Column()
   url: string;
 

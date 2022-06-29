@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -26,6 +27,7 @@ export class User {
     description: '유저의 이메일주소',
     required: true,
   })
+  @Index()
   @Column()
   email: string;
 

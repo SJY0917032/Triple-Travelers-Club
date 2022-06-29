@@ -45,6 +45,7 @@ export class Review {
     required: true,
     description: '리뷰의 작성자',
   })
+  @Index()
   @ManyToOne(() => User)
   user: User;
 

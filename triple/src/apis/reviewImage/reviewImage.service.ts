@@ -25,7 +25,7 @@ export class ReviewImageService {
 
     const findImage = await this.reviewImageRepository.findOne({
       where: {
-        url,
+        url: url,
       },
     });
     if (!findImage) {
