@@ -120,11 +120,3 @@ http://localhost:3000/api-docs
 ## ERD
 
 ![ERD](image/ERD.png)
-
-```
-
-```
-
-```
-
-```
