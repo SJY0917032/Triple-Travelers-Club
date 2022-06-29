@@ -110,10 +110,10 @@ export class ReviewController {
    * @author SJY0917032
    * @description 리뷰를 ID로 조회합니다.
    *
-   * @param id 단일 조회할 리뷰의 ID (UUID)
+   * @param reviewId 단일 조회할 리뷰의 ID (UUID)
    * @returns {Promise<Review>} 조회한 REVIEW를 반환합니다.
    */
-  @Get(':id')
+  @Get(':reviewId')
   @ApiOperation({
     summary: '리뷰 조회',
     description: '리뷰를 UUID로 조회합니다',
