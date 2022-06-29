@@ -51,6 +51,23 @@ export class PointService {
 
   /**
    * @author SJY0917032
+   * @description 모든 유저의 포인트의 증감 이력을 조회합니다
+   *
+   * @returns {Promise<Point[]>} 모든 유저의 포인트의 증감 이력을 반환합니다.
+   */
+  async findAll(): Promise<Point[]> {
+    const point = await this.pointRepository.find({
+      relations: ['user'],
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return point;
+  }
+
+  /**
+   * @author SJY0917032
    * @description 유저 ID (UUID)로 유저를 조회합니다.
    *
    * @param userId 유저 ID (UUID)

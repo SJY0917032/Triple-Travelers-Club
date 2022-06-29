@@ -69,4 +69,18 @@ export class PointController {
   findAllByUserId(@Param('userId') userId: string): Promise<Point[]> {
     return this.pointService.findAllByUserId(userId);
   }
+
+  @Get()
+  @ApiOperation({
+    summary: '모든 유저의 포인트 기록 조회',
+    description: '모든 유저의 포인트 기록을 조회합니다',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '모든 유저의 포인트를 성공적으로 조회했습니다.',
+    type: [Point],
+  })
+  findAll() {
+    return this.pointService.findAll();
+  }
 }
