@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { PointService } from './point.service';
 import { UserPointDto } from './dto/userPointDto';
 import { Point } from './entities/point.entity';
@@ -39,7 +39,7 @@ export class PointController {
       example: '해당 유저가 존재하지 않습니다.',
     },
   })
-  userTotalPoint(userId: string): Promise<UserPointDto> {
+  userTotalPoint(@Param('userId') userId: string): Promise<UserPointDto> {
     return this.pointService.findUserTotalPoint(userId);
   }
 
@@ -66,7 +66,7 @@ export class PointController {
       example: '해당 유저가 존재하지 않습니다.',
     },
   })
-  findAllByUserId(userId: string): Promise<Point[]> {
+  findAllByUserId(@Param('userId') userId: string): Promise<Point[]> {
     return this.pointService.findAllByUserId(userId);
   }
 }
