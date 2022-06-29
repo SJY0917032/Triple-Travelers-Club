@@ -110,10 +110,10 @@ export class ReviewController {
    * @author SJY0917032
    * @description 리뷰를 ID로 조회합니다.
    *
-   * @param id 단일 조회할 리뷰의 ID (UUID)
+   * @param reviewId 단일 조회할 리뷰의 ID (UUID)
    * @returns {Promise<Review>} 조회한 REVIEW를 반환합니다.
    */
-  @Get(':id')
+  @Get(':reviewId')
   @ApiOperation({
     summary: '리뷰 조회',
     description: '리뷰를 UUID로 조회합니다',
@@ -127,8 +127,8 @@ export class ReviewController {
     description: '리뷰가 존재하지 않는경우.',
     status: 400,
   })
-  findOne(@Param('id') id: string): Promise<Review> {
-    return this.reviewService.findOneById(id);
+  findOne(@Param('reviewId') reviewId: string): Promise<Review> {
+    return this.reviewService.findOneById(reviewId);
   }
 
   /**
@@ -150,5 +150,19 @@ export class ReviewController {
   })
   findAllByUserId(@Param('userId') userId: string): Promise<Review[]> {
     return this.reviewService.findAllByUserId(userId);
+  }
+
+  @Get()
+  @ApiOperation({
+    summary: '리뷰 전체 조회',
+    description: '리뷰를 전체 조회합니다',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '리뷰 전체 조회 성공',
+    type: [Review],
+  })
+  findAll() {
+    return this.reviewService.findAll();
   }
 }

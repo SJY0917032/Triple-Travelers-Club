@@ -102,15 +102,27 @@ export class ReviewService {
 
   /**
    * @author SJY0917032
+   * @description 리뷰의 목록을 전체 조회합니다.
+   *
+   * @returns {Promise<Review[]>} 리뷰 목록을 반환합니다.
+   */
+  async findAll(): Promise<Review[]> {
+    return await this.reviewRepository.find({
+      relations: ['user', 'place', 'images'],
+    });
+  }
+
+  /**
+   * @author SJY0917032
    * @description 들어온 REVIEW UUID로 리뷰를 조회합니다..
    *
-   * @param id 리뷰의 UUID
+   * @param reviewId 리뷰의 UUID
    * @returns {Promise<Review>} 리뷰를 반환합니다.
    */
-  async findOneById(id: string) {
+  async findOneById(reviewId: string): Promise<Review> {
     const result = await this.reviewRepository.findOne({
       where: {
-        id: id,
+        id: reviewId,
       },
       relations: ['user', 'place', 'images'],
     });
@@ -129,7 +141,7 @@ export class ReviewService {
    * @param userId 유저의 UUID
    * @returns {Promise<Review[]>} 유저가 작성한 리뷰를 반환합니다.
    */
-  async findAllByUserId(userId: string) {
+  async findAllByUserId(userId: string): Promise<Review[]> {
     return await this.reviewRepository.find({
       where: {
         user: {
@@ -147,7 +159,10 @@ export class ReviewService {
    * @param reviewId 리뷰의 UUID
    * @returns {Promise<EventDto>} 수정된 리뷰로 EventDto를 반환합니다.
    */
-  async update(reviewId: string, updateReviewDto: UpdateReviewDto) {
+  async update(
+    reviewId: string,
+    updateReviewDto: UpdateReviewDto,
+  ): Promise<EventDto> {
     const { content, reviewImageUrls } = updateReviewDto;
     const review = await this.reviewRepository.findOne({
       where: {
@@ -205,7 +220,7 @@ export class ReviewService {
    * @param reviewId 삭제할 리뷰의 UUID
    * @returns {Promise<EventDto>} 삭제된 리뷰로 EventDto를 반환합니다.
    */
-  async delete(reviewId: string) {
+  async delete(reviewId: string): Promise<EventDto> {
     const review = await this.reviewRepository.findOne({
       where: {
         id: reviewId,

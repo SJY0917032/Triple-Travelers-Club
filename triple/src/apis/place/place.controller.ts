@@ -54,7 +54,7 @@ export class PlaceController {
    */
   @Get(':name')
   @ApiOperation({
-    summary: '장소를 이름으로 조회합니다.',
+    summary: '장소를 이름으로 조회',
     description: '장소를 이름으로 조회합니다.',
   })
   @ApiResponse({
@@ -82,7 +82,7 @@ export class PlaceController {
    */
   @Post()
   @ApiOperation({
-    summary: '장소를 생성합니다',
+    summary: '장소를 생성',
     description: '장소를 생성합니다',
   })
   @ApiCreatedResponse({
