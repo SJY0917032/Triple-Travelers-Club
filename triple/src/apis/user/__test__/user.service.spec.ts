@@ -129,9 +129,11 @@ describe('UserService', () => {
     it('유저가 존재하지 않습니다.', async () => {
       userRepository.findOne.mockResolvedValue(null);
 
+      const userRepositorySpyFindOne = jest.spyOn(userRepository, 'findOne');
       await expect(userService.delete('1')).rejects.toThrowError(
         '유저가 존재하지 않습니다.',
       );
+      expect(userRepositorySpyFindOne).toBeCalledTimes(1);
     });
   });
 });
