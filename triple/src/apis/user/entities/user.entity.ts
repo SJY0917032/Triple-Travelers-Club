@@ -56,21 +56,21 @@ export class User {
   level: number;
 
   @ApiProperty({
-    example: '2020-01-01T00:00:00.000Z',
+    example: '2022-01-01T00:00:00.000Z',
     description: '유저의 생성일',
   })
   @CreateDateColumn()
   readonly createdAt?: Date;
 
   @ApiProperty({
-    example: '2020-01-01T00:00:00.000Z',
+    example: '2022-01-01T00:00:00.000Z',
     description: '유저의 수정일',
   })
   @UpdateDateColumn()
   readonly updatedAt?: Date;
 
   @ApiProperty({
-    example: '2020-01-01T00:00:00.000Z',
+    example: '2022-01-01T00:00:00.000Z',
     description: '유저의 삭제일',
   })
   @DeleteDateColumn()

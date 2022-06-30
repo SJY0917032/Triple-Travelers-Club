@@ -10,8 +10,10 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiCreatedResponse,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -39,6 +41,7 @@ export class ReviewController {
     summary: '리뷰 생성',
     description: '리뷰를 생성합니다',
   })
+  @ApiBody({ type: CreateReviewDto })
   @ApiCreatedResponse({
     description: '리뷰 생성 성공',
     type: EventDto,
@@ -65,6 +68,8 @@ export class ReviewController {
     summary: '리뷰 수정',
     description: '리뷰를 수정합니다',
   })
+  @ApiBody({ type: UpdateReviewDto })
+  @ApiParam({ type: String, name: 'reviewId' })
   @ApiResponse({
     status: 200,
     description: '리뷰 수정 성공',
@@ -93,6 +98,7 @@ export class ReviewController {
     summary: '리뷰 삭제',
     description: '리뷰를 삭제합니다',
   })
+  @ApiParam({ type: String, name: 'reviewId' })
   @ApiResponse({
     status: 200,
     description: '리뷰 삭제 성공',
@@ -118,6 +124,7 @@ export class ReviewController {
     summary: '리뷰 조회',
     description: '리뷰를 UUID로 조회합니다',
   })
+  @ApiParam({ type: String, name: 'reviewId' })
   @ApiResponse({
     status: 200,
     description: '리뷰 조회 성공',
@@ -143,6 +150,7 @@ export class ReviewController {
     summary: '내 리뷰 조회',
     description: '내 리뷰를 조회합니다',
   })
+  @ApiParam({ type: String, name: 'userId' })
   @ApiResponse({
     status: 200,
     description: '리뷰 조회 성공',

@@ -13,8 +13,10 @@ import { CreateUserDto } from './dto/createUserDto';
 import { UpdateUserDto } from './dto/updateUserDto';
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiCreatedResponse,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
@@ -59,6 +61,7 @@ export class UserController {
     summary: '유저 생성',
     description: '유저를 생성합니다.',
   })
+  @ApiBody({ type: CreateUserDto })
   @ApiCreatedResponse({
     description: '유저 생성 성공',
     type: User,
@@ -83,6 +86,8 @@ export class UserController {
     summary: '유저 수정',
     description: '유저를 수정합니다.',
   })
+  @ApiBody({ type: UpdateUserDto })
+  @ApiParam({ name: 'email', type: String })
   @ApiCreatedResponse({
     description: '유저 수정 성공',
     type: User,
@@ -110,6 +115,7 @@ export class UserController {
     summary: '유저 삭제',
     description: '유저를 삭제합니다.',
   })
+  @ApiParam({ name: 'email', type: String })
   @ApiResponse({
     status: 200,
     description: '유저 삭제 성공',

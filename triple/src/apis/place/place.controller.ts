@@ -10,8 +10,10 @@ import { PlaceService } from './place.service';
 import { CreatePlaceDto } from './dto/createPlaceDto';
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiCreatedResponse,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
@@ -57,6 +59,7 @@ export class PlaceController {
     summary: '장소를 이름으로 조회',
     description: '장소를 이름으로 조회합니다.',
   })
+  @ApiParam({ type: String, name: 'name' })
   @ApiResponse({
     status: 200,
     description: '장소 조회를 성공했습니다.',
@@ -85,6 +88,7 @@ export class PlaceController {
     summary: '장소를 생성',
     description: '장소를 생성합니다',
   })
+  @ApiBody({ type: CreatePlaceDto })
   @ApiCreatedResponse({
     description: '장소 생성을 성공했습니다.',
     type: Place,

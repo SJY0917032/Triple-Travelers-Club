@@ -1,3 +1,4 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   Column,
   Entity,
@@ -32,28 +33,60 @@ export enum ReasonFormat {
 
 @Entity()
 export class Point {
+  @ApiProperty({
+    example: 'POINT UUID',
+    description: 'Point의 ID (UUID)',
+    required: true,
+  })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ApiProperty({
+    example: EventTypeFormat.REVIEW,
+    description: '이벤트가 발생한곳의 타입',
+    required: true,
+  })
   @Column()
   type: EventTypeFormat;
 
+  @ApiProperty({
+    example: ActionFormat.ADD,
+    description: '이밴트 발생 타입',
+    required: true,
+  })
   @Column()
   action: ActionFormat;
 
+  @ApiProperty({
+    example: ReasonFormat.REVIEW_ADD,
+    description: '이벤트가 발생 타입의 상세 이유',
+  })
   @Column()
   reason: ReasonFormat;
 
+  @ApiProperty({
+    example: 1,
+    description: '이벤트로 발생한 증가,차감된 점수',
+    required: true,
+  })
   @Column({ type: 'decimal' })
   score: number;
 
+  @ApiPropertyOptional({
+    type: () => User,
+  })
   @Index()
   @ManyToOne(() => User)
   user: User;
 
+  @ApiPropertyOptional({ type: () => Review })
   @ManyToOne(() => Review)
   review: Review;
 
+  @ApiProperty({
+    example: '2022-01-01T00:00:00.000Z',
+    description: '이벤트 발생일',
+  })
   @CreateDateColumn()
   createdAt: Date;
 }

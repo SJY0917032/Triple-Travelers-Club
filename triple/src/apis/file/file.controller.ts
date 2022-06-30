@@ -20,6 +20,7 @@ import {
   ApiConsumes,
   ApiCreatedResponse,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -83,6 +84,7 @@ export class FileController {
     summary: '파일 확인',
     description: '파일을 확인합니다',
   })
+  @ApiParam({ type: String, name: 'url' })
   @ApiResponse({
     status: 200,
     description: '파일 URL로 조회를 성공.',

@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiCreatedResponse,
   ApiOperation,
   ApiTags,
@@ -34,6 +35,7 @@ export class EventController {
     summary: '이벤트 호출',
     description: '이벤트를 호출하며, 이벤트에 맞는 포인트를 부여합니다',
   })
+  @ApiBody({ type: EventDto })
   @ApiCreatedResponse({
     description: '이벤트의 성공 여부',
     type: [Point],

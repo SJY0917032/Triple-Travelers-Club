@@ -70,21 +70,21 @@ export class Review {
   point?: Point[];
 
   @ApiProperty({
-    example: '2020-01-01T00:00:00.000Z',
+    example: '2022-01-01T00:00:00.000Z',
     description: '리뷰의 작성일',
   })
   @CreateDateColumn()
   readonly createdAt?: Date;
 
   @ApiProperty({
-    example: '2020-01-01T00:00:00.000Z',
+    example: '2022-01-01T00:00:00.000Z',
     description: '리뷰의 수정일',
   })
   @UpdateDateColumn()
   readonly updatedAt?: Date;
 
   @ApiProperty({
-    example: '2020-01-01T00:00:00.000Z',
+    example: '2022-01-01T00:00:00.000Z',
     description: '리뷰의 삭제일',
   })
   @DeleteDateColumn()
