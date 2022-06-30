@@ -59,7 +59,7 @@ export class ReviewService {
         throw new BadRequestException('해당 장소가 존재하지 않습니다.');
       }
 
-      const review = this.reviewRepository.create({
+      const review = await this.reviewRepository.create({
         content,
         user: user,
         place: place,
@@ -128,7 +128,7 @@ export class ReviewService {
     });
 
     if (!result) {
-      throw new BadRequestException('존재하지않는 리뷰입니다.');
+      throw new BadRequestException('존재하지 않는 리뷰입니다.');
     }
 
     return result;
@@ -171,7 +171,7 @@ export class ReviewService {
       relations: ['images'],
     });
     if (!review) {
-      throw new BadRequestException('존재하지않는 리뷰입니다.');
+      throw new BadRequestException('존재하지 않는 리뷰입니다.');
     }
     if (content) {
       review.content = content;
