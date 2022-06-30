@@ -47,7 +47,8 @@ export class EventController {
     },
   })
   async eventDistributor(@Body(ValidationPipe) eventDto: EventDto) {
-    const result = this.eventService.eventDistributor(eventDto);
+    const result = await this.eventService.eventDistributor(eventDto);
+
     return { code: 201, message: '이벤트가 완료됐습니다.', data: { result } };
   }
 }
