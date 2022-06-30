@@ -1,6 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Review } from '../review/entities/review.entity';
 import { CreateReviewImageDto } from './dto/createReviewImageDto';
 import { ReviewImage } from './entities/reviewImage.entity';
 
@@ -8,8 +7,6 @@ export class ReviewImageService {
   constructor(
     @InjectRepository(ReviewImage)
     private readonly reviewImageRepository: Repository<ReviewImage>,
-    @InjectRepository(Review)
-    private readonly reviewRepository: Repository<Review>,
   ) {}
 
   /**

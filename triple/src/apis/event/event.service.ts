@@ -18,8 +18,6 @@ export class EventService {
     private readonly reviewRepository: Repository<Review>, //
     @InjectRepository(User)
     private readonly userRepository: Repository<User>, //
-    @InjectRepository(Place)
-    private readonly placeRepository: Repository<Place>, //
     @InjectRepository(Point)
     private readonly pointRepository: Repository<Point>, //
 
@@ -92,7 +90,7 @@ export class EventService {
     await queryRunner.startTransaction('SERIALIZABLE');
 
     try {
-      const addPoint = this.pointRepository.create({
+      const addPoint = await this.pointRepository.create({
         type: type,
         action: action,
         user: user,
@@ -105,7 +103,7 @@ export class EventService {
       result.push(addPoint);
 
       if (isFirstWrite) {
-        const bonusPoint = this.pointRepository.create({
+        const bonusPoint = await this.pointRepository.create({
           type: type,
           action: action,
           user: user,
@@ -171,7 +169,7 @@ export class EventService {
           reason: reason,
         });
 
-        await this.pointRepository.save(modPoint);
+        await queryRunner.manager.save(modPoint);
 
         const checkUserLevel = await this.userLevelCheck(user);
         await this.updateUserLevel(user, checkUserLevel, queryRunner);
@@ -221,7 +219,7 @@ export class EventService {
     await queryRunner.startTransaction('SERIALIZABLE');
 
     try {
-      const deletePoint = this.pointRepository.create({
+      const deletePoint = await this.pointRepository.create({
         type: type,
         action: action,
         user: user,
@@ -230,11 +228,11 @@ export class EventService {
         reason: reason,
       });
 
-      await this.pointRepository.save(deletePoint);
+      await queryRunner.manager.save(deletePoint);
       result.push(deletePoint);
 
       if (score[1] !== 0) {
-        const deleteBonusPoint = this.pointRepository.create({
+        const deleteBonusPoint = await this.pointRepository.create({
           type: type,
           action: action,
           user: user,
@@ -242,7 +240,7 @@ export class EventService {
           score: score[1],
           reason: ReasonFormat.REVIEW_DELETE_FIRST_PLACE,
         });
-        await this.pointRepository.save(deleteBonusPoint);
+        await queryRunner.manager.save(deleteBonusPoint);
         result.push(deleteBonusPoint);
       }
       const checkUserLevel = await this.userLevelCheck(user);
@@ -411,12 +409,18 @@ export class EventService {
       isFirstWrite = 0;
     }
 
-    if (point[0].reason === ReasonFormat.REVIEW_MOD_ADD_PHOTO) {
+    if (
+      point[0].reason === ReasonFormat.REVIEW_MOD_ADD_PHOTO ||
+      point[0].reason === ReasonFormat.REVIEW_ADD_with_PHOTO
+    ) {
       reviewPoint = -2;
       return [reviewPoint, isFirstWrite];
     }
 
-    if (point[0].reason === ReasonFormat.REVIEW_MOD_DELETE_PHOTO) {
+    if (
+      point[0].reason === ReasonFormat.REVIEW_MOD_DELETE_PHOTO ||
+      point[0].reason === ReasonFormat.REVIEW_ADD
+    ) {
       reviewPoint = -1;
       return [reviewPoint, isFirstWrite];
     }
@@ -473,6 +477,7 @@ export class EventService {
         ...user,
         level: level,
       });
+
       await qr.manager.save(update);
     }
   }
