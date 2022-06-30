@@ -10,14 +10,20 @@
 
 ## 🛠 사용한 기술
 
-> - TypeScript
-> - Node.js
->   - Nest.js
->     - (API Statement Library) Swagger
-> - MySQL
->   - TypeORM
-> - Docker
->   - Docker-Compose
+> - **TypeScript**
+> - **Node.js**
+>   - **Nest.js**
+>     - **(API Statement Library) Swagger**
+> - **MySQL**
+>   - **TypeORM**
+> - **Docker**
+>   - **Docker-Compose**
+
+<hr>
+
+## ERD
+
+![ERD](image/ERD.png)
 
 <hr>
 
@@ -117,6 +123,20 @@ http://localhost:3000/api-docs
 | **POST** |   http://localhost:3000/uploads/    |   File    |  Url   |          파일을 업로드합니다           |
 | **GET**  | http://localhost:3000/uploads/{url} |    Url    |  File  | 업로드된 주소의 URL의 파일을 읽습니다. |
 
-## ERD
+<hr>
 
-![ERD](image/ERD.png)
+## 🌲 폴더의 간략한 구조
+
+```
+├─🌳 Triple-Travelers-Club
+│  │──📋README.md
+│  │
+│  ├──🏞image : README.md에 사용된 이미지 파일을 모아둔 폴더입니다.
+│  │
+│  │
+│  ├──🗽triple : Server Main 폴더
+│  │   │
+│  │   ├──src : Server Source 파일 폴더
+│  │   │
+│  │   └──commons : Server에 공통으로 사용되는 파일 폴더
+```
