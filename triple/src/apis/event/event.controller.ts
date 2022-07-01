@@ -1,7 +1,8 @@
 import {
   Body,
   Controller,
-  HttpCode,
+  Inject,
+  InternalServerErrorException,
   Post,
   ValidationPipe,
 } from '@nestjs/common';
@@ -12,6 +13,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { WinstonLogger, WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Point } from '../point/entities/point.entity';
 import { EventDto } from './dto/eventDto';
 import { EventService } from './event.service';
@@ -20,6 +22,8 @@ import { EventService } from './event.service';
 @Controller('events')
 export class EventController {
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: WinstonLogger,
     private readonly eventService: EventService, //
   ) {}
 
@@ -47,8 +51,20 @@ export class EventController {
     },
   })
   async eventDistributor(@Body(ValidationPipe) eventDto: EventDto) {
+    this.printLoggerServiceLog(eventDto);
     const result = await this.eventService.eventDistributor(eventDto);
 
     return { code: 201, message: '이벤트가 완료됐습니다.', data: { result } };
+  }
+  private printLoggerServiceLog(dto: EventDto) {
+    try {
+      throw new InternalServerErrorException('test');
+    } catch (e) {
+      this.logger.error('error: ' + JSON.stringify(dto), e.stack);
+    }
+    this.logger.warn('warn: ' + JSON.stringify(dto));
+    this.logger.log('log: ' + JSON.stringify(dto));
+    this.logger.verbose('verbose: ' + JSON.stringify(dto));
+    this.logger.debug('debug: ' + JSON.stringify(dto));
   }
 }
