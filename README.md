@@ -145,3 +145,11 @@ http://localhost:3000/
 │  │   │
 │  │   └──commons : Server에 공통으로 사용되는 파일 폴더
 ```
+
+<hr>
+
+0701 마무리하며 추가를 마무리 짓지못해 아쉬웠던점
+
+1. Controller 테스트를 완벽하게 하지못함
+2. Event-Driven 아키텍쳐에대한 이해가 부족해 과제를 더 완벽하게 못한점
+   2.1 -> CQRS와 Event-Driven에대해서 더 공부해보자.
