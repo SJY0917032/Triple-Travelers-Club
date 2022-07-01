@@ -58,6 +58,10 @@ export class PlaceService {
   async create(createPlaceDto: CreatePlaceDto) {
     const { name } = createPlaceDto;
 
+    if (!name) {
+      throw new UnprocessableEntityException('장소 이름을 입력해주세요.');
+    }
+
     const placeExists = await this.checkPlaceExists(name);
     if (placeExists) {
       throw new UnprocessableEntityException('이미 존재하는 장소입니다.');

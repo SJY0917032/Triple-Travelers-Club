@@ -25,8 +25,8 @@ export class ReviewImage {
     description: '사진의 URL',
     required: true,
   })
+  @Column({ nullable: false })
   @Index()
-  @Column()
   url: string;
 
   @ApiPropertyOptional({

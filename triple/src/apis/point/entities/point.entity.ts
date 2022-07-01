@@ -46,7 +46,7 @@ export class Point {
     description: '이벤트가 발생한곳의 타입',
     required: true,
   })
-  @Column()
+  @Column({ nullable: false })
   type: EventTypeFormat;
 
   @ApiProperty({
@@ -54,14 +54,14 @@ export class Point {
     description: '이밴트 발생 타입',
     required: true,
   })
-  @Column()
+  @Column({ nullable: false })
   action: ActionFormat;
 
   @ApiProperty({
     example: ReasonFormat.REVIEW_ADD,
     description: '이벤트가 발생 타입의 상세 이유',
   })
-  @Column()
+  @Column({ nullable: false })
   reason: ReasonFormat;
 
   @ApiProperty({
@@ -69,14 +69,14 @@ export class Point {
     description: '이벤트로 발생한 증가,차감된 점수',
     required: true,
   })
-  @Column({ type: 'decimal' })
+  @Column({ type: 'decimal', nullable: false })
   score: number;
 
   @ApiPropertyOptional({
     type: () => User,
   })
-  @Index()
   @ManyToOne(() => User)
+  @Index()
   user: User;
 
   @ApiPropertyOptional({ type: () => Review })

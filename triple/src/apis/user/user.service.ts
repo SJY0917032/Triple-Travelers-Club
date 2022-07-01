@@ -39,7 +39,12 @@ export class UserService {
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { nickName, email, password } = createUserDto;
 
+    if (!nickName || !email || !password) {
+      throw new UnprocessableEntityException('유저 정보를 입력해주세요.');
+    }
+
     const userExists = await this.checkUserExists(email);
+
     if (userExists) {
       throw new UnprocessableEntityException('이미 존재하는 이메일입니다.');
     }

@@ -27,8 +27,8 @@ export class User {
     description: '유저의 이메일주소',
     required: true,
   })
+  @Column({ nullable: false })
   @Index()
-  @Column()
   email: string;
 
   @ApiProperty({
@@ -36,7 +36,7 @@ export class User {
     description: '유저의 닉네임',
     required: true,
   })
-  @Column()
+  @Column({ nullable: false })
   nickName: string;
 
   @ApiProperty({
@@ -44,7 +44,7 @@ export class User {
     description: '유저의 비밀번호, 6자이상 30자이하, 유저 생성시 암호화됨',
     required: true,
   })
-  @Column()
+  @Column({ nullable: false })
   password: string;
 
   @ApiProperty({

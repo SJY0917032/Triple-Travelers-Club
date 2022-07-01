@@ -22,8 +22,8 @@ export class Place {
     description: '장소의 이름',
     required: true,
   })
+  @Column({ nullable: false })
   @Index()
-  @Column({ unique: true })
   name: string;
 
   @ApiPropertyOptional({ type: () => [Review] })

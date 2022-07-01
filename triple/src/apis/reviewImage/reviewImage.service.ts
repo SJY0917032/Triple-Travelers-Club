@@ -1,3 +1,4 @@
+import { UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateReviewImageDto } from './dto/createReviewImageDto';
@@ -19,6 +20,10 @@ export class ReviewImageService {
     createReviewImageDto: CreateReviewImageDto,
   ): Promise<ReviewImage> {
     const { url, review } = createReviewImageDto;
+
+    if (!url || !review) {
+      throw new UnprocessableEntityException('이미지 정보를 입력해주세요.');
+    }
 
     const findImage = await this.reviewImageRepository.findOne({
       where: {

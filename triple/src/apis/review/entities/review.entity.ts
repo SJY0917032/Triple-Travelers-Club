@@ -30,7 +30,7 @@ export class Review {
     description: '리뷰의 내용',
     required: true,
   })
-  @Column({ type: 'longtext' })
+  @Column({ type: 'longtext', nullable: false })
   content: string;
 
   @ApiPropertyOptional({ type: () => [ReviewImage] })
@@ -45,8 +45,8 @@ export class Review {
     required: true,
     description: '리뷰의 작성자',
   })
-  @Index()
   @ManyToOne(() => User)
+  @Index()
   user: User;
 
   @ApiPropertyOptional({
@@ -54,8 +54,8 @@ export class Review {
     required: true,
     description: '리뷰의 장소',
   })
-  @Index()
   @ManyToOne(() => Place)
+  @Index()
   place: Place;
 
   @ApiPropertyOptional({
