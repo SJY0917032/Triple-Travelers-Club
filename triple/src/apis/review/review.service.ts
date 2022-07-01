@@ -59,6 +59,21 @@ export class ReviewService {
         throw new BadRequestException('해당 장소가 존재하지 않습니다.');
       }
 
+      const checkExistReview = await queryRunner.manager.findOne(Review, {
+        where: {
+          user: {
+            id: userId,
+          },
+          place: {
+            id: placeId,
+          },
+        },
+      });
+
+      if (checkExistReview) {
+        throw new BadRequestException('이미 작성한 리뷰가 존재합니다.');
+      }
+
       const review = await this.reviewRepository.create({
         content,
         user: user,

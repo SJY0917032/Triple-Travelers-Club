@@ -88,6 +88,7 @@ describe('ReviewService', () => {
       jest
         .spyOn(queryRunner.manager, 'findOne')
         .mockResolvedValueOnce({ id: '1' });
+      jest.spyOn(queryRunner.manager, 'findOne').mockResolvedValueOnce(null);
       jest.spyOn(queryRunner.manager, 'save').mockResolvedValueOnce({
         id: '1',
         content: '1',
@@ -116,7 +117,7 @@ describe('ReviewService', () => {
       } as CreateReviewDto);
 
       expect(result).toEqual(eventDto);
-      expect(qrSpyOnFindOne).toHaveBeenCalledTimes(2);
+      expect(qrSpyOnFindOne).toHaveBeenCalledTimes(3);
       expect(qrSpyOnSave).toHaveBeenCalledTimes(1);
       expect(qrSpyOnCommit).toHaveBeenCalledTimes(1);
       expect(qrSpyOnRollback).toHaveBeenCalledTimes(0);
@@ -176,6 +177,36 @@ describe('ReviewService', () => {
       expect(qrSpyOnCommit).toHaveBeenCalledTimes(1);
       expect(qrSpyOnRollback).toHaveBeenCalledTimes(2);
       expect(qrSpyOnRelease).toHaveBeenCalledTimes(3);
+    });
+    it('생성중 오류가 발생하는 경우 - 이미 리뷰를 작성한 경우', async () => {
+      const queryRunner = dataSource.createQueryRunner();
+
+      jest.spyOn(queryRunner.manager, 'findOne').mockResolvedValueOnce('유저');
+      jest.spyOn(queryRunner.manager, 'findOne').mockResolvedValueOnce('장소');
+      jest
+        .spyOn(queryRunner.manager, 'findOne')
+        .mockResolvedValueOnce('유저가작성한 해당 장소의 리뷰');
+
+      const qrSpyOnFindOne = jest.spyOn(queryRunner.manager, 'findOne');
+      const qrSpyOnSave = jest.spyOn(queryRunner.manager, 'save');
+      const qrSpyOnCommit = jest.spyOn(queryRunner, 'commitTransaction');
+      const qrSpyOnRollback = jest.spyOn(queryRunner, 'rollbackTransaction');
+      const qrSpyOnRelease = jest.spyOn(queryRunner, 'release');
+
+      await expect(
+        reviewService.create({
+          title: '1',
+          content: '1',
+          userId: '1',
+          placeId: '1',
+        } as CreateReviewDto),
+      ).rejects.toThrowError('이미 작성한 리뷰가 존재합니다.');
+
+      expect(qrSpyOnFindOne).toHaveBeenCalledTimes(3);
+      expect(qrSpyOnSave).toHaveBeenCalledTimes(0);
+      expect(qrSpyOnCommit).toHaveBeenCalledTimes(1);
+      expect(qrSpyOnRollback).toHaveBeenCalledTimes(3);
+      expect(qrSpyOnRelease).toHaveBeenCalledTimes(4);
     });
   });
 
