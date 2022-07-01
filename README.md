@@ -40,15 +40,20 @@
 ## 📚 실행 방법
 
 ```
-git clone https://github.com/SJY0917032/Triple-Travelers-Club.git
+git clone https://github.com/SJY0917032/Triple-Travelers-Club.git 이후
 
-cd Triple-Travelers-Club/triple
+cd Triple-Travelers-Club/triple 로 폴더 이동
 
+> Test 실행
+yarn test
+
+> 서버실행
 docker-compose build
 docker-compose up
 
 Swagger 접속
-http://localhost:3000/api-docs
+http://localhost:3000/api-docs  OR
+http://localhost:3000/
 
 시나리오
 1. 유저생성 /user POST
@@ -60,7 +65,7 @@ http://localhost:3000/api-docs
 
 <hr>
 
-> **❗️❗️❗️기본적으로 서버실행후 Swagger를 통해 확인이 가능합니다.❗️❗️❗️**
+> ## **🌟서버실행후 Swagger를 통해 추가적으로 확인이 가능합니다.🌟**
 
 ## API 항목
 
